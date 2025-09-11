@@ -16,7 +16,7 @@
     .div_navtop h2{
         margin: 0px;
     }
-    .div_rightcontent h4{
+    .div_sidebar h4{
         margin: 0px;
     }
     .div_maincontent{
@@ -26,25 +26,37 @@
         list-style: none;
         padding: 0px;
     }
-    .div_leftcontent ul li{
-        border : 1px solid #c9c9c9;
-        width : 200px;
-        border-radius: 5px;
-        padding: 5px;
-        background-color: #ececec;
-        margin-bottom: 5px;
-    }
-    .div_leftcontent ul li:hover{
-        background-color: white;
-    }
-    .div_leftcontent ul li.active{
-        background-color: green;
+    .div_menu ul li{
+        border : 1px solid #D14836;
+        width : 155px;
         color: white;
+        border-radius: 40px;
+        padding: 5px;
+        background-color: #D12436;
+        margin-bottom: 5px;
+        margin : 10px;
+        text-align: center;
     }
-    .div_centercontent{
+    a{
+        color: #D14836;
+        text-decoration: none;
+    }
+    a:hover{
+        text-decoration: underline;
+    }
+    .div_menu ul li:hover{
+        background-color: white;
+        color :#D12436
+    }
+    .div_menu ul li.active{
+        background-color: white;
+        color: #D12436;
+        font-weight: bold;
+    }
+    .div_main{
         padding: 5px;
     }
-    .div_rightcontent{
+    .div_sidebar{
         width : 20vw;
         margin: 10px 0px 10px 10px;
         padding: 5px;
@@ -58,10 +70,6 @@
         padding: 5px 10px;
         background-color: lightgray;
     }
-   f
-    a:hover{
-        text-decoration: underline;
-    }
     
 </style>
 <body>
@@ -70,17 +78,17 @@
         <div class="div_navtop_content">Use the menu to select different Stylesheets</div>
     </div>
     <div class="div_maincontent">
-        <div class="div_leftcontent">
+        <div class="div_menu">
             <ul>
-                <li class="active"><a href="https://ossworkspace-lp5j.vercel.app/style1.html"style="color: inherit; text-decoration: none;">Stylesheet 1</a></li>
-                <li><a>Stylesheet 2</a></li>
-                <li>Stylesheet 3</li>
-                <li>Stylesheet 4</li>
-                <li>No Stylesheet</li>
+                <li ><a href="https://ossworkspace-lp5j.vercel.app/style1.html"style="color: inherit; text-decoration: none;">Stylesheet 1</a></li>
+                <li class="active"><a href="https://ossworkspace-lp5j.vercel.app/style2.html"style="color: inherit; text-decoration: none;">Stylesheet 2</a></li>
+                <li><a href="https://ossworkspace-lp5j.vercel.app/style3.html"style="color: inherit; text-decoration: none;">Stylesheet 3</a></li>
+                <li><a href="https://ossworkspace-lp5j.vercel.app/style4.html"style="color: inherit; text-decoration: none;">Stylesheet 4</a></li>
+                <li><a href="https://ossworkspace-lp5j.vercel.app/nostyle.html"style="color: inherit; text-decoration: none;">No Stylesheet</a></li>
             </ul>
         </div>
 
-        <div class="div_centercontent">
+        <div class="div_main">
             <h2>Same Page Different Stylesheets</h2>
             This is a demonstration of how different stylesheets can change the layout of your HTML page. You
             can change the layout of this page by selecting different stylesheets in the menu, or by selecting
@@ -98,7 +106,7 @@
         </div>
 
 
-        <div class="div_rightcontent">   
+        <div class="div_sidebar">   
             <h4>Side-Bar</h4><br>
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt
             ut laoreet dolore magna aliquam erat volutpat.
