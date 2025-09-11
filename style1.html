@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .div_navtop{
+        color: white;
+        border : 5px solid green;
+        padding : 5px;
+        background-color: green;
+        border-radius: 5px; 
+        text-align: left;
+    }
+    .div_navtop h2{
+        margin: 0px;
+    }
+    .div_rightcontent h4{
+        margin: 0px;
+    }
+    .div_maincontent{
+        display: flex;
+    }
+    ul{
+        list-style: none;
+        padding: 0px;
+    }
+    .div_leftcontent ul li{
+        border : 1px solid #808080;
+        width : 200px;
+        border-radius: 5px;
+        padding: 5px;
+        background-color: #aaaa;
+    }
+    .div_leftcontent ul li .active{
+        background-color: green;
+    }
+    li::marker{
+        display: none;
+    }
+    .div_rightcontent{
+        margin: 0px 10px 10px 10px;
+        padding: 5px;
+        background-color: skyblue;
+        color: white;
+        border: 1px solid skyblue;
+        border-radius: 5px;
+    }
+    .div_footer{
+        border: 1px solid grey;
+        border-radius: 5px;
+        padding: 5px 10px;
+        background-color: lightgray;
+    }
+    
+</style>
+<body>
+    <div class="div_navtop">
+        <h2>Welcome to 여민기's Homepage (22200439)</h2>
+        <div class="div_navtop_content">Use the menu to select different Stylesheets</div>
+    </div>
+    <div class="div_maincontent">
+        <div class="div_leftcontent">
+            <ul>
+                <li class="active">Stylesheet 1</li>
+                <li>Stylesheet 2</li>
+                <li>Stylesheet 3</li>
+                <li>Stylesheet 4</li>
+                <li>No Stylesheet</li>
+            </ul>
+        </div>
+
+        <div class="div_centercontent">
+            <h2>Same Page Different Stylesheets</h2>
+            This is a demonstration of how different stylesheets can change the layout of your HTML page. You
+            can change the layout of this page by selecting different stylesheets in the menu, or by selecting
+            one of the following links:
+            <div>
+                <a href="http://127.0.0.1:5500/style1.html">Stylesheet1</a>,
+                <a href="./style2.html">Stylesheet2</a>,
+                <a href="./style3.html">Stylesheet3</a>,
+                <a href="./style4.html">Stylesheet4</a>.
+            </div>
+            <h3>No Styles</h3>
+            This page uses DIV elements to group different sections of the HTML page. Click here to see how
+            the page looks like with no stylesheet:<br>
+            <a href="http://127.0.0.1:5500/assignment01.html">No Stylesheet.</a>.
+        </div>
+
+
+        <div class="div_rightcontent">   
+            <h4>Side-Bar</h4><br>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt
+            ut laoreet dolore magna aliquam erat volutpat.
+        </div>
+
+    </div>
+
+    <div class="div_footer">
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt
+        ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci
+        tation ullamcorper suscipit lobortis nisl ut aliquip
+    </div>    
+</body>
+</html>
