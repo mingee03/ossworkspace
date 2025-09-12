@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Example</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #1e1e1e;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      display: flex;
+      text-align: center;
+      align-items: center;
+      background-color: #26292c;
+      padding: 10px 20px;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #5da2ff;
+      margin: 0 10px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+    .navbar a.active {
+      background-color: #1473ff;
+      color: white;
+    }
+    .navbar a:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="#" class="active">Home</a>
+    <a href="#">Features</a>
+    <a href="#">Pricing</a>
+    <a href="#">FAQs</a>
+    <a href="#">About</a>
+  </div>
+</body>
+</html>
