@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week3 class3</title>
+    <style>
+        label span{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>HTML Forms</h2>
+    <div>사용자 정보 입력</div>
+    <form action="form_ok.html" method="GET">
+        <!-- action은 정보를 제출할 url!, method는 폼 데이터를 전송하는 방식! -->
+        <label for="input_name"><span>*</span>이름 : </label> <br/>
+        <!-- 라벨에서 for는 인풋의 아이디값을 입력해야 함! -->
+        <input type="text" name="name" id="input_name" placeholder="내용을 입력해주세요!"/> <br/>
+        <!-- placeholder는 아무것도 입력되지 않았을 때, 가이드 문구처럼 나오는 것 -->
+        
+        <label for="input_email"><span>*</span>이메일 : </label> <br/>
+        <input type="email" name="email" id="input_email"/> <br/>
+
+        <fieldset>
+            <legend>필드셋의 라벨같은 것!</legend>
+            <label for="input_phone">전화번호 : </label> <br/>
+            <input type="text" name="phone" id="input_phone"/> <br/>
+            <label for="input_address">주소 : </label> <br/>
+            <input type="text" name="address" id="input_address"/> <br/>
+        </fieldset>
+
+        <div>
+            <label for="input_text">TEXT</label>
+            <input type="text" id="input_text" name="text" readonly />
+            <style>
+                input[type='text']:read-only{
+                    background-color: aquamarine;
+                }
+            </style> 
+        </div>
+        <div>
+            <label for="input_passwod">PASSWORD</label>
+            <input type="password" id="input_password" name="password" autofocus/>
+        </div>
+        <div>
+            <label for="input_number">NUMBER</label>
+            <input type="number" id="input_number" name="number" />
+        </div>
+        <div>
+            <label for="input_date">DATE</label>
+            <input type="date" id="input_date" name="date" />
+        </div>
+        <div>
+            <label for="input_time">TIME</label>
+            <input type="time" id="input_time" name="time" />
+        </div>
+        <div>
+            <label for="input_hidden">HIDDEN</label>
+            <input type="hidden" id="input_hidden" name="hidden" />
+            <input type="text" id="input_hidden_1" name="hidden1" style="display: none;" />
+        </div>
+
+        <div>
+            <label for="input_radio_1">여</label>
+            <input type="radio" id="input_radio_1" name="input_radio" />
+        </div>
+        <div>
+            <label for="input_radio_2">남</label>
+            <input type="radio" id="input_radio_2" name="input_radio" />
+        </div>
+        <div>
+            <label for="input_radio_3">선택안함</label>
+            <input type="radio" id="input_radio_3" name="input_radio" />
+        </div>
+
+
+        <div>
+            <label for="input_checkbox_1">축구</label>
+            <input type="checkbox" id="input_checkbox_1" name="checkbox_1" />
+        </div>
+        <div>
+            <label for="input_checkbox_2">농구</label>
+            <input type="checkbox" id="input_checkbox_2" name="checkbox_2" />
+        </div>
+
+        <div>
+            <label for="input_file">FILE</label>
+            <input type="file" id="input_file" name="file" />
+        </div>
+
+        <div>
+            <label for="select_1">SELECT</label>
+            <select id="select_1" name="select_1">
+                <optgroup label="저학년">
+                    <option value="1">1학년</option>
+                    <option value="2">2학년</option>
+                </optgroup>
+                <optgroup label="고학년">
+                    <option value="3">3학년</option>
+                    <option value="4">4학년</option>
+                    <option value="5">5+학년</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div>
+            <label for="input_list">LIST</label>
+            <input type="text" list="list_fruit" id="input_list" name="list" />
+            <datalist id="list_fruit">
+                <option value="apple">사과</option>
+                <option value="orange">오렌지</option>
+                <option value="grape">포도</option>
+            </datalist>
+        </div>
+
+        <div>
+            <label for="textarea_1">TEXTAREA</label>
+            <textarea id="textarea_1" name="textarea_1" rows="10"></textarea>
+        </div>
+        <div>
+            <label for="input_color">COLOR</label>
+            <input type="color" id="input_color" name="color" />
+        </div>
+
+        <input type="submit" value="제출"/>
+        <input type="reset" value="취소"/>
+    </form>
+</body>
+</html>

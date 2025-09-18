@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week3 class3</title>
+    <style>
+        label span{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <h4>덧셈 계산기</h4>
+    <form>
+        <input type='text' size='num1' id='num1' pattern='\d*'>
+        +
+        <input type='text' size='num2' id='num2' pattern='\d*'>
+        <button onclick='add()' type='button'>=</button>
+        <input type='text' size=2 name="result" id="result" readonly>
+        <br><br>
+        <input type="reset" value="초기화">
+    </form>
+</body>
+</html>
+<script>
+    function add(){
+        var num1 = document.getElementById("num1");
+        var num2 = document.getElementById("num2");
+
+        var sum = parseInt(num1.value) + parseInt(num2.value);
+
+        var result = document.getElementById("result");
+        result.value = sum;
+    }
+</script>
