@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Form JS</title>
+<style>
+form{background-color:lightyellow;padding:10px;}
+input,select,textarea{margin:5px;}
+</style>
+<script>
+function checkForm(){
+ let name=document.forms[0].name.value;
+ let email=document.forms[0].email.value;
+ let pw=document.forms[0].password.value;
+ if(name==""){alert("이름을 입력하세요");return false;}
+ if(email==""){alert("이메일을 입력하세요");return false;}
+ if(pw.length<4){alert("비밀번호는 4글자 이상");return false;}
+ return true;
+}
+function over(obj){obj.style.backgroundColor="lightblue";}
+function out(obj){obj.style.backgroundColor="";}
+function keydownAlert(){alert("키보드 눌렀음");}
+</script>
+</head>
+<body>
+<h2>회원가입 Form</h2>
+<form onsubmit="return checkForm()">
+이름:<input type="text" name="name" onmouseover="over(this)" onmouseout="out(this)"><br>
+이메일:<input type="text" name="email"><br>
+비밀번호:<input type="password" name="password" onkeydown="keydownAlert()"><br>
+성별:<input type="radio" name="gender" value="male" onclick="alert('남자 선택')">남성
+<input type="radio" name="gender" value="female" onclick="alert('여자 선택')">여성<br>
+취미:<input type="checkbox" name="hobby" value="sports" onchange="alert('체크 바뀜')">스포츠
+<input type="checkbox" name="hobby" value="music">음악
+<input type="checkbox" name="hobby" value="travel">여행<br>
+전공:<select name="major" onchange="alert('전공 선택 바뀜')">
+<option value="cs">컴퓨터공학</option>
+<option value="math">수학</option>
+<option value="design">디자인</option>
+</select><br>
+생일:<input type="date" name="birthday"><br>
+자기소개:<br>
+<textarea name="intro" rows="4" cols="40"></textarea><br>
+좋아하는 색상:<input type="color" name="color"><br>
+<input type="submit" value="제출">
+</form>
+</body>
+</html>

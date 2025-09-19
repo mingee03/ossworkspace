@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Form Dynamic</title>
+<style>
+body{background-color:#f0f0f0;}
+#list{border:1px solid black;padding:10px;margin-top:10px;}
+</style>
+<script>
+function addItem(){
+ let input=document.getElementById("txt");
+ let val=input.value;
+ if(val==""){alert("내용을 입력하세요");return;}
+ let li=document.createElement("div");
+ li.innerHTML=val;
+ document.getElementById("list").appendChild(li);
+ input.value="";
+}
+function delItem(){
+ document.getElementById("list").innerHTML="";
+}
+</script>
+</head>
+<body>
+<h2>동적 페이지</h2>
+<input type="text" id="txt">
+<button onclick="addItem()">추가</button>
+<button onclick="delItem()">삭제</button>
+<div id="list"></div>
+</body>
+</html>

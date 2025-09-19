@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Form Style</title>
+<style>
+form{
+background-color:lightgray;
+padding:10px;
+}
+input,select,textarea{
+margin:5px;
+}
+input[type=text]{border:2px solid red;}
+input[type=password]{border:2px solid blue;}
+input[type=date]{background-color:yellow;}
+textarea{background-color:pink;}
+input[type=submit]{background-color:green;color:white;}
+</style>
+</head>
+<body>
+<h2>회원가입 Form</h2>
+<form>
+이름:<input type="text" name="name"><br>
+이메일:<input type="text" name="email"><br>
+비밀번호:<input type="password" name="password"><br>
+성별:<input type="radio" name="gender" value="male">남성
+<input type="radio" name="gender" value="female">여성<br>
+취미:<input type="checkbox" name="hobby" value="sports">스포츠
+<input type="checkbox" name="hobby" value="music">음악
+<input type="checkbox" name="hobby" value="travel">여행<br>
+전공:<select name="major">
+<option value="cs">컴퓨터공학</option>
+<option value="math">수학</option>
+<option value="design">디자인</option>
+</select><br>
+생일:<input type="date" name="birthday"><br>
+자기소개:<br>
+<textarea name="intro" rows="4" cols="40"></textarea><br>
+좋아하는 색상:<input type="color" name="color"><br>
+<input type="submit" value="제출">
+</form>
+</body>
+</html>
