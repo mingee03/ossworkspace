@@ -2,29 +2,64 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Form No Style</title>
+<title>Checkout Form Clone</title>
 </head>
 <body>
-<h2>회원가입 Form</h2>
+<div>
+  <h2>Checkout form</h2>
+  <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+</div>
+<h2>Billing address</h2>
 <form>
-이름:<input type="text" name="name"><br>
-이메일:<input type="text" name="email"><br>
-비밀번호:<input type="password" name="password"><br>
-성별:<input type="radio" name="gender" value="male">남성
-<input type="radio" name="gender" value="female">여성<br>
-취미:<input type="checkbox" name="hobby" value="sports">스포츠
-<input type="checkbox" name="hobby" value="music">음악
-<input type="checkbox" name="hobby" value="travel">여행<br>
-전공:<select name="major">
-<option value="cs">컴퓨터공학</option>
-<option value="math">수학</option>
-<option value="design">디자인</option>
-</select><br>
-생일:<input type="date" name="birthday"><br>
-자기소개:<br>
-<textarea name="intro" rows="4" cols="40"></textarea><br>
-좋아하는 색상:<input type="color" name="color"><br>
-<input type="submit" value="제출">
+First name: <input type="text" name="fname"><br><br>
+Last name: <input type="text" name="lname"><br><br>
+Username: <input type="text" name="uname"><br><br>
+Email (Optional): <input type="text" name="email"><br><br>
+Address: <input type="text" name="addr"><br><br>
+Address 2 (Optional): <input type="text" name="addr2"><br><br>
+Country:
+<select>
+<option>United States</option>
+<option>Korea</option>
+</select><br><br>
+State:
+<select>
+<option>California</option>
+<option>New York</option>
+</select><br><br>
+Zip: <input type="text" name="zip"><br><br>
+
+<input type="checkbox"> Shipping address same as billing<br>
+<input type="checkbox"> Save info for next time<br><br>
+
+<h3>Payment</h3>
+<input type="radio" name="pay" checked> Credit card<br>
+<input type="radio" name="pay"> Debit card<br>
+<input type="radio" name="pay"> PayPal<br><br>
+
+Name on card: <input type="text" name="cname"><br><br>
+Credit card number: <input type="text" name="cnum"><br><br>
+Expiration: <input type="text" name="exp"><br><br>
+CVV: <input type="text" name="cvv"><br><br>
+
+<input type="submit" value="Continue to checkout">
 </form>
+
+<h3>Your cart</h3>
+<ul>
+<li>Product name - $12</li>
+<li>Second product - $8</li>
+<li>Third item - $5</li>
+<li>Promo code: EXAMPLECODE (-$5)</li>
+<li><b>Total (USD): $20</b></li>
+</ul>
+<input type="text" placeholder="Promo code">
+<button>Redeem</button>
+
+<footer>
+<p>© 2022 Company Name</p>
+Privacy | Terms | Support
+</footer>
+
 </body>
 </html>
