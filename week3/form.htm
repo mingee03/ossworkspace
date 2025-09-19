@@ -2,19 +2,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Form Dynamic</title>
+<title>Dynamic Web page</title>
 <style>
-body{background-color:#f0f0f0;}
-#list{border:1px solid black;padding:10px;margin-top:10px;}
+body{font-family:sans-serif;}
+#list{margin-top:10px;}
+button{padding:5px 10px;margin:2px;}
+#addBtn{background-color:blue;color:white;}
+#delBtn{background-color:green;color:white;}
 </style>
 <script>
 function addItem(){
  let input=document.getElementById("txt");
  let val=input.value;
  if(val==""){alert("내용을 입력하세요");return;}
- let li=document.createElement("div");
- li.innerHTML=val;
- document.getElementById("list").appendChild(li);
+ let items=val.split(",");
+ let ul=document.getElementById("list");
+ for(let i=0;i<items.length;i++){
+  let li=document.createElement("li");
+  li.textContent=items[i].trim();
+  ul.appendChild(li);
+ }
  input.value="";
 }
 function delItem(){
@@ -23,10 +30,10 @@ function delItem(){
 </script>
 </head>
 <body>
-<h2>동적 페이지</h2>
-<input type="text" id="txt">
-<button onclick="addItem()">추가</button>
-<button onclick="delItem()">삭제</button>
-<div id="list"></div>
+<h1>Dynamic Web page</h1>
+<input type="text" id="txt" value="apple, banana, kiwi">
+<button id="addBtn" onclick="addItem()">추가</button>
+<button id="delBtn" onclick="delItem()">삭제</button>
+<ul id="list"></ul>
 </body>
 </html>
