@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<style>
+    .player {
+        
+    }
+    
+    .div_panel_O{
+        background-color: greenyellow;
+    }
+    .div_panel_X{
+        background-color: lightcoral;
+    }
+    .div_panel_O, .div_panel_X {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 300px;
+    }
+</style>
+<body>
+    stnum : <input type="text" id="stnum" value ="1002">
+    <div class ="player"></div>
+    <table style="width: 100%">
+        <tr>
+            <td style="width: 50%">
+                <div class="div_panel_O">O</div>
+            </td>
+            <td style="width: 50%">
+                <div class="div_panel_X">X</div>
+            </td>
+        </tr>
+</body>
+</html>

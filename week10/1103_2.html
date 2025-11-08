@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-11-03</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+    목록!
+    <div id="div_list"></div>
+    <button id="btn_list">목록 보기</button>
+
+    id : <input type="text" id="input_id" />
+    name : <input type="text" id="input_name" />
+    age : <input type="number" id="input_age" />
+    <button id="btn_add">입력하기</button>
+    <button id="btn_update">수정하기</button>
+    <button id="btn_delete">삭제하기</button>
+    <button id="btn_detail">조회하기</button>
+    <script>
+        $(function(){
+
+            $("#btn_detail").click(function(){
+                alert("detail student?");
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET","http://localhost:3000/students/" + $("#input_id").val());
+                xhr.setRequestHeader("content-type","application/json");
+                xhr.send();
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        let res = JSON.parse(xhr.response);
+                        alert(JSON.stringify(res));
+                    } else {
+                        console.log(xhr.status, xhr.statusText);
+                    }
+                }
+            });
+
+            $("#btn_delete").click(function(){
+                alert("delete student?");
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("DELETE","http://localhost:3000/students/" + $("#input_id").val());
+                xhr.setRequestHeader("content-type","application/json");
+                xhr.send();
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        let res = JSON.parse(xhr.response);
+                        alert(JSON.stringify(res));
+                    } else {
+                        console.log(xhr.status, xhr.statusText);
+                    }
+                }
+            });
+
+            $("#btn_update").click(function(){
+                alert("update student?");
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("PUT","http://localhost:3000/students/" + $("#input_id").val());
+                xhr.setRequestHeader("content-type","application/json");
+                let data = { name: $("#input_name").val(), age: $("#input_age").val() };
+                xhr.send(JSON.stringify(data));
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        let res = JSON.parse(xhr.response);
+                        alert(JSON.stringify(res));
+                    } else {
+                        console.log(xhr.status, xhr.statusText);
+                    }
+                }
+            });
+
+            $("#btn_add").click(function(){
+                alert("add student?");
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST","http://localhost:3000/students");
+                xhr.setRequestHeader("content-type","application/json");
+                let data = { name: $("#input_name").val(), age: $("#input_age").val() };
+                xhr.send(JSON.stringify(data));
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        let res = JSON.parse(xhr.response);
+                        alert(JSON.stringify(res));
+                    } else {
+                        console.log(xhr.status, xhr.statusText);
+                    }
+                }
+            });
+
+            $("#btn_list").click(function(){
+                alert("get students?");
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET","http://localhost:3000/students");
+                xhr.setRequestHeader("content-type","application/json");
+                xhr.send();
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        let res = JSON.parse(xhr.response);
+                        //alert(JSON.stringify(res));
+                        $("#div_list").html("");
+                        res.forEach(function(each){
+                            $("#div_list").append(`<div>${each.id} : ${each.name}(${each.age})</div>`);
+                        });
+                    } else {
+                        console.log(xhr.status, xhr.statusText);
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- <style>
+        #div_01{
+            background-color: pink;
+            padding: 20px;
+        }
+    </style>
+
+    <button id="btn_disappear">사라지기</button>
+    <button id="btn_fontcolor">글자색 바꾸기</button>
+    <button id="btn_moving">움직이기</button>
+
+    <div>
+        <span id="div_01" style="position: absolute;">div_01 입니다.</span>
+    </div> -->
+
+
+    <script>
+        /*
+        let div_01 = document.getElementById("div_01");
+        alert(div_01.innerHTML);
+
+        let div_01jq = $("#div_01");        alert(div_01jq.html());
+
+
+        $(function(){
+            $("#btn_disappear").click(function(){
+                alert("disappear?");
+                //$(this).hide();
+                $("#div_01").remove();
+            });
+            $("#btn_fontcolor").click(function(){
+                alert("font color?");
+                $("#div_01").css("color", "red");
+            });
+            $("#btn_moving").click(function(){
+                alert("moving?");
+                $("#div_01").animate({left : "250px"});
+            });
+        });
+        */
+    </script>
+</body>
+</html>

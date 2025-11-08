@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<header lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <script>
+        let fruit = ["apple", "banana", "Orange"];
+        let fruit2 = [];
+        fruit2[0] = "orange";
+        fruit2[2] = "pear";
+        fruit2[fruit2.length] = "lemon";
+        customPush(fruit2, "kiwi");
+        
+        for(let i=0; i<fruit2.length; i++){
+            alert(fruit2[i]);
+        }
+
+        for(let each of fruit2){
+            console.log(each);
+        }
+        function customPush(arr, value){
+            arr[arr.length] = value;
+            const person = {
+                Firstname: "John",
+                Lastname: "Doe",
+                age: 30
+            }
+            const user = { name : "jerry" , age : 20};
+            function toJson() {
+            document.getElementById("demo").innerHTML = JSON.stringify(user);
+            }
+            function toJS() {
+            let jstr = document.getElementById("demo").innerHTML;
+            let obj = JSON.parse(jstr);
+            document.getElementById("user").innerHTML = obj.name + "(" + obj.age + ")";
+            }
+        }// Create an Object
+        const car = {};
+        // Add Properties
+        car.name = "Genesis";
+        car.year = "2024";
+
+
+        let myCar = {
+        name: 'Ford',
+        year: 2015,
+        print : function(){
+        return "Car Info [" + this.name + "]- " + this.year;
+        }
+        };
+        document.write(myCar.print()); 
+        hoisting_test();
+        function hoisting_test() {
+        document.writeln("Hoisting!<br>");
+        }
+        hoisting_test();
+        let exeTest = function() {
+            alert(11);
+        }
+    </script>
+</body>
+</html>
