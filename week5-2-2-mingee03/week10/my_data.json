@@ -1,0 +1,74 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "노트북",
+      "category": "전자제품",
+      "price": 1200000,
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "무선 마우스",
+      "category": "컴퓨터 액세서리",
+      "price": 35000,
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "name": "기계식 키보드",
+      "category": "컴퓨터 액세서리",
+      "price": 110000,
+      "inStock": false
+    },
+    {
+      "id": 4,
+      "name": "4K 모니터",
+      "category": "전자제품",
+      "price": 450000,
+      "inStock": true
+    },
+    {
+      "id": 5,
+      "name": "스마트폰",
+      "category": "전자제품",
+      "price": 890000,
+      "inStock": true
+    },
+    {
+      "id": 6,
+      "name": "블루투스 이어폰",
+      "category": "오디오",
+      "price": 150000,
+      "inStock": true
+    },
+    {
+      "id": 7,
+      "name": "웹캠",
+      "category": "컴퓨터 액세서리",
+      "price": 65000,
+      "inStock": true
+    },
+    {
+      "id": 8,
+      "name": "태블릿 PC",
+      "category": "전자제품",
+      "price": 620000,
+      "inStock": false
+    },
+    {
+      "id": 9,
+      "name": "외장 SSD 1TB",
+      "category": "저장장치",
+      "price": 130000,
+      "inStock": true
+    },
+    {
+      "id": 10,
+      "name": "USB-C 허브",
+      "category": "컴퓨터 액세서리",
+      "price": 45000,
+      "inStock": true
+    }
+  ]
+}
