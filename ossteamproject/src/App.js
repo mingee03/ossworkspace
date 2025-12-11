@@ -1,28 +1,28 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-// 🟢 [변경] 이제 단순한 Table이 아니라, 모든 로직을 담고 있는 'Page'를 불러옵니다.
-// (EventPage.js가 src 폴더 바로 아래에 있다고 가정합니다.)
-import EventPage from './EventPage'; 
-
-// 상세 페이지는 기존 위치 그대로 유지 (혹시 파일 위치를 옮기셨다면 경로 수정 필요)
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import EventPage from './EventPage';
 import EventDetail from './components/EventDetail';
+import BookmarkList from './components/BookmarkList'; // 🟢 추가
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        {/* 상단 네비게이션 바 (선택 사항) */}
+        <nav style={{ padding: '20px', backgroundColor: '#f8f9fa', borderBottom: '1px solid #ddd', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+           <Link to="/" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>🏠 행사 찾기</Link>
+           <Link to="/bookmarks" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>⭐ 찜 목록</Link>
+        </nav>
+
         <h1 style={{ textAlign: 'center', marginTop: '30px', color: '#2c3e50' }}>
           🏛️ 공공데이터 조회 시스템
         </h1>
         <hr style={{ width: '80%', margin: '20px auto', border: '0', borderTop: '1px solid #eee' }} />
         
         <Routes>
-          {/* 🟢 [변경] 목록 페이지에 EventTable 대신 EventPage를 연결합니다 */}
           <Route path="/" element={<EventPage />} />
-          
-          {/* 상세 페이지 */}
           <Route path="/detail" element={<EventDetail />} />
+          <Route path="/bookmarks" element={<BookmarkList />} /> {/* 🟢 경로 추가 */}
         </Routes>
       </div>
     </BrowserRouter>
