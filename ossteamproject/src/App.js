@@ -15,7 +15,7 @@ function App() {
         </nav>
 
         <h1 style={{ textAlign: 'center', marginTop: '30px', color: '#2c3e50' }}>
-          🏛️ 전국 행사 검색 포털
+          🏛️ 전국 행사 검색포털
         </h1>
         <hr style={{ width: '80%', margin: '20px auto', border: '0', borderTop: '1px solid #eee' }} />
         
