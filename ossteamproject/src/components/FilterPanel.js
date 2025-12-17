@@ -28,7 +28,11 @@ export default function FilterPanel({
   endDate, setEndDate,
   region, setRegion,
   category, setCategory,
-  onSearch
+  // 🟢 추가된 Props
+  eventName, setEventName,
+  orgName, setOrgName,
+  onSearch,
+  onReset
 }) {
   return (
     <div style={panelStyle}>
@@ -56,9 +60,9 @@ export default function FilterPanel({
           <option value="인천">인천</option>
           <option value="강원">강원</option>
           <option value="전북">전북</option>
-          <option value="전남">전남</option>
-          <option value="경북">경북</option>
-          <option value="경남">경남</option>
+          <option value="전라남도">전남</option>
+          <option value="경상북도">경북</option>
+          <option value="경상남도">경남</option>
           <option value="제주">제주</option>
         </select>
       </div>
@@ -75,21 +79,65 @@ export default function FilterPanel({
         </select>
       </div>
 
-      <button
-        onClick={onSearch}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: '#ff7c02',
-          color: 'white',
-          border: 'none',
-          borderRadius: '6px',
-          fontSize: '16px',
-          cursor: 'pointer'
-        }}
-      >
-        적용하기
-      </button>
+      {/* 🟢 상세 행사명 추가 */}
+      <div style={{ marginBottom: '20px' }}>
+        <label style={labelStyle}>📝 상세 행사명</label>
+        <input 
+          type="text" 
+          value={eventName} 
+          onChange={e => setEventName(e.target.value)} 
+          placeholder="예: 음악회"
+          style={controlStyle} 
+        />
+      </div>
+
+      {/* 🟢 기관명 추가 */}
+      <div style={{ marginBottom: '20px' }}>
+        <label style={labelStyle}>🏢 기관명</label>
+        <input 
+          type="text" 
+          value={orgName} 
+          onChange={e => setOrgName(e.target.value)} 
+          placeholder="예: 예술의전당"
+          style={controlStyle} 
+        />
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <button
+          onClick={onSearch}
+          style={{
+            width: '100%',
+            padding: '12px',
+            backgroundColor: '#ff7c02',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            fontWeight: 'bold'
+          }}
+        >
+          적용하기
+        </button>
+
+        {/* 🟢 초기화 버튼 추가 */}
+        <button
+          onClick={onReset}
+          style={{
+            width: '100%',
+            padding: '10px',
+            backgroundColor: 'white',
+            color: '#666',
+            border: '1px solid #ccc',
+            borderRadius: '6px',
+            fontSize: '14px',
+            cursor: 'pointer'
+          }}
+        >
+          필터 초기화 ↺
+        </button>
+      </div>
     </div>
   );
 }

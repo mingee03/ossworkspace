@@ -17,101 +17,66 @@ let globalCache = {
 
 function EventPage() {
   const navigate = useNavigate();
+  
   const API_KEY = "53d6Q4GS02bmf%2FGCrtn5Bkv11rSr61ocwflBQZqpmOI0liyBTFZOXjTqdWQ6B6yddVJuto%2FWxXQpJ%2FvPGntsUg%3D%3D";
   const BASE_URL = "/api/openapi/tn_pubr_public_pblprfr_event_info_api";
-
   const itemsPerPage = 12;
 
-  // 모드
+  // === State ===
   const [mode, setMode] = useState(globalCache.isLoaded ? "SMART" : "ASK");
-
   const [allData, setAllData] = useState(globalCache.allData);
   const [displayData, setDisplayData] = useState([]);
-
   const [apiTotalCount, setApiTotalCount] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [progressMsg, setProgressMsg] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 필터 상태
+  // 우측 필터 상태
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [region, setRegion] = useState("");
   const [category, setCategory] = useState("");
-  const [eventName, setEventName] = useState("");
-  const [orgName, setOrgName] = useState("");
+  const [eventName, setEventName] = useState(""); // 상세 행사명
+  const [orgName, setOrgName] = useState("");     // 상세 기관명
 
+  // 상단 검색어
   const [exactEventName, setExactEventName] = useState("");
 
-  // 🟢 [추가] 찜하기 관련 State
+  // 찜하기
   const [bookmarks, setBookmarks] = useState([]);
-  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false); // 찜 목록만 보기 모드
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
 
-  // =========================================================
-  // 1) 초기 실행
-  // =========================================================
+  // 1. 초기 실행
   useEffect(() => {
-    // 1-1. 로컬 스토리지에서 찜 목록 불러오기
     const savedBookmarks = JSON.parse(localStorage.getItem('cultureZip_bookmarks')) || [];
     setBookmarks(savedBookmarks);
 
-    // 1-2. 데이터 로드
     if (globalCache.isLoaded) {
       setDisplayData(globalCache.allData);
     } else {
-      fetchApiData(1);
+      // 초기 로드 (모든 조건 비운 상태로 검색)
+      searchData(1, "", "", "", "", "", "", "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // =========================================================
-  // 🟢 [핵심] 찜하기 토글 함수
-  // =========================================================
+  // 2. 찜 토글
   const toggleBookmark = (item) => {
-    // 고유 키 생성 (중복 방지용)
     const getEventKey = (i) => `${i.eventNm}-${i.eventStartDate}-${i.opar}`;
     const key = getEventKey(item);
-    
     const isBookmarked = bookmarks.some(b => getEventKey(b) === key);
+    
     let newBookmarks;
-
-    if (isBookmarked) {
-      // 이미 있으면 삭제
-      newBookmarks = bookmarks.filter(b => getEventKey(b) !== key);
-    } else {
-      // 없으면 추가
-      newBookmarks = [...bookmarks, item];
-    }
+    if (isBookmarked) newBookmarks = bookmarks.filter(b => getEventKey(b) !== key);
+    else newBookmarks = [...bookmarks, item];
 
     setBookmarks(newBookmarks);
     localStorage.setItem('cultureZip_bookmarks', JSON.stringify(newBookmarks));
   };
 
-  // =========================================================
-  // 2) API 데이터 조회
-  // =========================================================
-  const fetchApiData = async (page) => {
-    setLoading(true);
-    try {
-      let url = `${BASE_URL}?serviceKey=${API_KEY}&pageNo=${page}&numOfRows=${itemsPerPage}&type=json`;
-      if (eventName?.trim()) url += `&eventNm=${encodeURIComponent(eventName.trim())}`;
-      if (orgName?.trim()) url += `&opar=${encodeURIComponent(orgName.trim())}`;
-
-      const res = await axios.get(url);
-      const items = res.data?.response?.body?.items || [];
-      const total = res.data?.response?.body?.totalCount || 0;
-      const list = Array.isArray(items) ? items : [items];
-      const sorted = list.sort((a, b) => new Date(b.eventStartDate) - new Date(a.eventStartDate));
-
-      setDisplayData(sorted);
-      setApiTotalCount(total);
-    } catch (e) { console.error(e); } finally { setLoading(false); }
-  };
-
-  // =========================================================
-  // 3) 전체 다운로드
-  // =========================================================
+  // 3. 다운로드 로직
   const startDownload = async () => {
     setMode("DOWNLOADING");
     try {
@@ -129,116 +94,145 @@ function EventPage() {
         collected = [...collected, ...(Array.isArray(items) ? items : [items])];
       }
       collected.sort((a, b) => new Date(b.eventStartDate) - new Date(a.eventStartDate));
+
       setAllData(collected);
       setDisplayData(collected);
       globalCache.allData = collected;
       globalCache.isLoaded = true;
+
       setMode("SMART");
       setCurrentPage(1);
-      setEventName(""); setOrgName("");
+      // 다운로드 완료 후 검색어 초기화
+      setExactEventName(""); setEventName(""); setOrgName(""); setRegion("");
+      
     } catch (e) {
       alert("다운로드 실패"); setMode("API");
     }
   };
 
   // =========================================================
-  // 4) 검색 로직 (스마트 검색 포함)
+  // 🟢 [핵심] 통합 검색 함수 (인자를 직접 받아 즉시 처리)
   // =========================================================
-  const handleSearch = () => {
-    setCurrentPage(1);
+  const searchData = async (
+    page, 
+    p_mainKey,  // 상단 검색어
+    p_region, p_category, p_event, p_org, // 필터들
+    p_sDate, p_eDate // 날짜
+  ) => {
+    setLoading(true);
+    setCurrentPage(page);
     setShowBookmarksOnly(false); // 검색 시 찜 모드 해제
 
+    // --- A. 스마트 모드 (클라이언트 필터링 - 유사검색) ---
     if (mode === "SMART") {
-      // 🟢 스마트 검색: 공백제거 + 소문자
-      const eKey = eventName.toLowerCase().replace(/\s+/g, "");
-      const oKey = orgName.toLowerCase().replace(/\s+/g, "");
-      const rKey = region.toLowerCase().replace(/\s+/g, "");
-      const cKey = category.toLowerCase().replace(/\s+/g, "");
+      // 공백 제거 및 소문자 변환
+      const mk = (p_mainKey || "").toLowerCase().replace(/\s+/g, "");
+      const rk = (p_region || "").toLowerCase().replace(/\s+/g, "");
+      const ck = (p_category || "").toLowerCase().replace(/\s+/g, "");
+      const ek = (p_event || "").toLowerCase().replace(/\s+/g, "");
+      const ok = (p_org || "").toLowerCase().replace(/\s+/g, "");
       
-      const fStart = startDate ? startDate.replaceAll("-", "") : null;
-      const fEnd = endDate ? endDate.replaceAll("-", "") : null;
+      const fs = p_sDate ? p_sDate.replaceAll("-", "") : null;
+      const fe = p_eDate ? p_eDate.replaceAll("-", "") : null;
 
       const result = allData.filter(item => {
+        // 데이터 전처리
         const n = (item.eventNm || "").toLowerCase().replace(/\s+/g, "");
         const p = (item.opar || "").toLowerCase().replace(/\s+/g, "");
-        // 지역/주소는 장소명+도로명주소 합쳐서 검사
-        const addr = (item.opar || "" + item.rdnmadr || "").toLowerCase().replace(/\s+/g, ""); 
+        // 주소 + 장소 통합 (유사 검색용)
+        const fullAddr = (item.rdnmadr || "" + item.lnmadr || "" + item.opar || "").toLowerCase().replace(/\s+/g, "");
         const desc = (item.eventCo || "").toLowerCase().replace(/\s+/g, "");
         const d = (item.eventStartDate || "").replaceAll("-", "");
 
-        const matchesEvent = !eKey || n.includes(eKey);
-        const matchesOrg = !oKey || p.includes(oKey);
-        const matchesRegion = !rKey || addr.includes(rKey);
-        const matchesCategory = !cKey || desc.includes(cKey);
+        // 조건 비교
+        const matchMain = !mk || n.includes(mk);
+        const matchRegion = !rk || fullAddr.includes(rk);
+        const matchCategory = !ck || desc.includes(ck);
+        const matchDetailEvt = !ek || n.includes(ek);
+        const matchDetailOrg = !ok || p.includes(ok);
 
-        let matchesDate = true;
-        if (fStart && d < fStart) matchesDate = false;
-        if (fEnd && d > fEnd) matchesDate = false;
+        let matchDate = true;
+        if (fs && d < fs) matchDate = false;
+        if (fe && d > fe) matchDate = false;
 
-        return matchesEvent && matchesOrg && matchesRegion && matchesCategory && matchesDate;
+        return matchMain && matchRegion && matchCategory && matchDetailEvt && matchDetailOrg && matchDate;
       });
+
       setDisplayData(result);
-    } else {
-      fetchApiData(1);
+      setLoading(false);
+    } 
+    // --- B. API 모드 (서버 요청) ---
+    else {
+      try {
+        let url = `${BASE_URL}?serviceKey=${API_KEY}&pageNo=${page}&numOfRows=${itemsPerPage}&type=json`;
+        
+        // 파라미터가 있는 것만 붙임 (API가 지원하는 필드만)
+        if (p_mainKey) url += `&eventNm=${encodeURIComponent(p_mainKey)}`;
+        if (p_region) url += `&rdnmadr=${encodeURIComponent(p_region)}`;
+        if (p_event) url += `&eventNm=${encodeURIComponent(p_event)}`;
+        if (p_org) url += `&opar=${encodeURIComponent(p_org)}`;
+        // 날짜 필터는 API 스펙에 따라 startDate, endDate 파라미터가 있다면 추가 가능
+
+        const res = await axios.get(url);
+        const items = res.data?.response?.body?.items || [];
+        const total = res.data?.response?.body?.totalCount || 0;
+        const list = Array.isArray(items) ? items : [items];
+        
+        // 결과 정렬
+        list.sort((a, b) => new Date(b.eventStartDate) - new Date(a.eventStartDate));
+
+        setDisplayData(list);
+        setApiTotalCount(total);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   // =========================================================
-  // 5) 정확 검색 (상단바)
+  // 🟢 이벤트 핸들러 (검색 & 초기화)
   // =========================================================
-  const handleExactSearch = () => {
-    const name = exactEventName.trim();
-    setCurrentPage(1);
-    setShowBookmarksOnly(false);
 
-    if (!name) {
-      if (mode === "SMART") setDisplayData(allData);
-      else fetchApiData(1);
-      return;
-    }
-
-    if (mode === "SMART") {
-      // 스마트 모드에선 부분 일치 허용
-      const lower = name.toLowerCase().replace(/\s+/g, "");
-      const result = allData.filter(item =>
-        (item.eventNm || "").toLowerCase().replace(/\s+/g, "").includes(lower)
-      );
-      setDisplayData(result);
-    } else {
-      fetchExactApiSearch(name);
-    }
+  // 1. 일반 검색 실행 (현재 화면에 입력된 값들로 검색)
+  const triggerSearch = () => {
+    searchData(1, exactEventName, region, category, eventName, orgName, startDate, endDate);
   };
 
-  const fetchExactApiSearch = async (name) => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`${BASE_URL}?serviceKey=${API_KEY}&pageNo=1&numOfRows=200&type=json&eventNm=${encodeURIComponent(name)}`);
-      const items = res.data?.response?.body?.items || [];
-      const list = Array.isArray(items) ? items : [items];
-      const filtered = list.filter(item => (item.eventNm || "").toLowerCase().includes(name.toLowerCase()));
-      setDisplayData(filtered);
-    } catch (e) { console.error(e); } finally { setLoading(false); }
+  // 2. 상단 검색창만 초기화
+  const handleTopReset = () => {
+    setExactEventName(""); // 화면 지우기
+    // 검색 로직에는 빈 값("")을 직접 전달해서 즉시 반영
+    searchData(1, "", region, category, eventName, orgName, startDate, endDate);
   };
 
-  // =========================================================
-  // 6) 페이지 변경 & 클릭
-  // =========================================================
+  // 3. 우측 필터만 초기화
+  const handleFilterReset = () => {
+    // 화면 필터 지우기
+    setStartDate(""); setEndDate(""); 
+    setRegion(""); setCategory(""); 
+    setEventName(""); setOrgName("");
+    
+    // 검색 로직에는 필터 부분에 빈 값("") 전달
+    searchData(1, exactEventName, "", "", "", "", "", "");
+  };
+
+  // 4. 페이지 변경
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    if (mode !== "SMART" && !showBookmarksOnly) fetchApiData(newPage);
+    // 스마트모드가 아니거나 찜 모드가 아닐 때만 API 재호출
+    if (mode !== "SMART" && !showBookmarksOnly) {
+      searchData(newPage, exactEventName, region, category, eventName, orgName, startDate, endDate);
+    }
   };
+  
+  const handleRowClick = (item) => navigate('/detail', { state: { event: item } });
 
-  const handleRowClick = (item) => {
-    navigate('/detail', { state: { event: item } });
-  };
-
-  // =========================================================
-  // 7) 화면 데이터 계산
-  // =========================================================
-  // 🟢 찜 목록 모드면 bookmarks를, 아니면 검색결과를 사용
+  // 렌더링용 변수 계산
   const finalData = showBookmarksOnly ? bookmarks : displayData;
-  const isClientPaging = mode === "SMART" || showBookmarksOnly;
-
+  const isClientPaging = mode === "SMART" || showBookmarksOnly || (mode === "API" && exactEventName);
+  
   const currentItems = isClientPaging
     ? finalData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
     : displayData;
@@ -252,29 +246,38 @@ function EventPage() {
       {mode === "ASK" && <PermissionBox onConfirm={startDownload} onDeny={() => setMode("API")} />}
       {mode === "DOWNLOADING" && <DownloadProgress progress={progress} message={progressMsg} />}
 
-      {/* 상단 정확 검색바 */}
+      {/* 🟢 상단 검색바 (초기화 버튼 추가) */}
       {mode !== "DOWNLOADING" && (
         <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '20px' }}>
-          <div style={{ display: 'flex', gap: '10px', width: '60%', maxWidth: '600px' }}>
+          <div style={{ display: 'flex', gap: '8px', width: '60%', maxWidth: '650px' }}>
             <input
               type="text"
-              placeholder="행사명으로 검색"
+              placeholder="행사명으로 검색 (예: 축제, 불꽃)"
               value={exactEventName}
               onChange={(e) => setExactEventName(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleExactSearch()}
+              onKeyPress={(e) => e.key === 'Enter' && triggerSearch()}
               style={{ flex: 1, padding: '12px 16px', fontSize: '16px', borderRadius: '8px', border: '1px solid #ddd' }}
             />
-            <button onClick={handleExactSearch} style={{ padding: '12px 20px', backgroundColor: '#ff7c02', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: 'pointer', whiteSpace: 'nowrap' }}>검색</button>
+            <button 
+              onClick={triggerSearch} 
+              style={{ padding: '12px 20px', backgroundColor: '#ff7c02', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', whiteSpace: 'nowrap', fontWeight: 'bold' }}>
+              검색
+            </button>
+            <button 
+              onClick={handleTopReset} 
+              style={{ padding: '12px 15px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              초기화
+            </button>
           </div>
         </div>
       )}
 
-      {/* 메인 콘텐츠 */}
+      {/* 메인 레이아웃 */}
       {mode !== "DOWNLOADING" && (
         <div style={{ display: 'flex', gap: '30px', padding: '20px 30px', maxWidth: '1500px', margin: '0 auto' }}>
           
+          {/* 왼쪽: 리스트 */}
           <div style={{ flex: 1 }}>
-            {/* 🟢 찜 목록 토글 버튼 */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                <h3 style={{ margin: 0, color: '#333' }}>
                  {showBookmarksOnly ? "⭐ 찜한 행사" : "🎭 행사 목록"} 
@@ -282,29 +285,22 @@ function EventPage() {
                </h3>
                <button 
                  onClick={() => { setShowBookmarksOnly(!showBookmarksOnly); setCurrentPage(1); }}
-                 style={{
-                   padding: '8px 16px', 
-                   backgroundColor: showBookmarksOnly ? '#ffc107' : '#eee', 
-                   color: showBookmarksOnly ? 'black' : '#555',
-                   border: 'none', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold'
-                 }}
-               >
+                 style={{ padding: '8px 16px', backgroundColor: showBookmarksOnly ? '#ffc107' : '#eee', color: showBookmarksOnly ? 'black' : '#555', border: 'none', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold' }}>
                  {showBookmarksOnly ? "🏠 전체 목록 보기" : `⭐ 찜 목록 보기 (${bookmarks.length})`}
                </button>
             </div>
 
-            {/* 🟢 EventCardList에 찜 관련 Props 전달 */}
             <EventCardList 
               items={currentItems} 
               loading={loading} 
               onRowClick={handleRowClick}
-              bookmarks={bookmarks}            // 찜 목록 전달
-              onToggleBookmark={toggleBookmark} // 토글 함수 전달
+              bookmarks={bookmarks}
+              onToggleBookmark={toggleBookmark}
             />
-            
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
           </div>
 
+          {/* 🟢 우측 필터 패널 (초기화 함수 전달) */}
           <FilterPanel
             startDate={startDate} setStartDate={setStartDate}
             endDate={endDate} setEndDate={setEndDate}
@@ -312,7 +308,8 @@ function EventPage() {
             category={category} setCategory={setCategory}
             eventName={eventName} setEventName={setEventName}
             orgName={orgName} setOrgName={setOrgName}
-            onSearch={handleSearch}
+            onSearch={triggerSearch}
+            onReset={handleFilterReset} // 전달
           />
         </div>
       )}
